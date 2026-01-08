@@ -1,0 +1,98 @@
+<div class="container mt-4 mb-5">
+  <h1 class="text-center mb-4">Sistema de Gestión SOA</h1>
+
+  <div class="card mb-5 shadow-sm border-primary">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">1. Gestión de Tipos de Producto</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <label>Nuevo Tipo:</label>
+          <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="nuevoTipo.tipo" placeholder="Ej: Electrónica">
+            <button class="btn btn-primary" (click)="guardarTipo()">Agregar</button>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <h6 class="mt-2">Tipos existentes:</h6>
+          <ul class="list-group list-group-horizontal flex-wrap">
+            @for (t of listaTipos; track t.id) {
+              <li class="list-group-item d-flex justify-content-between align-items-center me-2 mb-2" style="min-width: 200px;">
+                {{ t.tipo }}
+                <button class="btn btn-outline-danger btn-sm ms-2" (click)="eliminarTipo(t.id)">🗑️</button>
+              </li>
+            } @empty {
+              <li class="list-group-item text-muted">No hay tipos creados.</li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm border-success">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">2. Gestión de Productos</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3 border-end">
+          <h5 class="mb-3">Nuevo Producto</h5>
+          
+          <label>Tipo:</label>
+          <select class="form-select mb-2" [(ngModel)]="nuevoProducto.idTipo">
+            <option [value]="0">-- Seleccione --</option>
+            @for (t of listaTipos; track t.id) {
+              <option [value]="t.id">{{ t.tipo }}</option>
+            }
+          </select>
+
+          <label>Descripción:</label>
+          <input type="text" class="form-control mb-2" [(ngModel)]="nuevoProducto.descripcion">
+
+          <label>Valor:</label>
+          <input type="number" class="form-control mb-2" [(ngModel)]="nuevoProducto.valor">
+
+          <label>Costo:</label>
+          <input type="number" class="form-control mb-3" [(ngModel)]="nuevoProducto.costo">
+
+          <button class="btn btn-success w-100" (click)="guardarProducto()">Guardar Producto</button>
+        </div>
+
+        <div class="col-md-9">
+          <table class="table table-striped table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Costo</th>
+                <th>Valor</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of listaProductos; track p.id) {
+                <tr>
+                  <td>{{ p.id }}</td>
+                  <td>
+                    <span class="badge bg-secondary">{{ p.tipoProducto?.tipo || p.idTipo }}</span>
+                  </td>
+                  <td>{{ p.descripcion }}</td>
+                  <td>${{ p.costo }}</td>
+                  <td>${{ p.valor }}</td>
+                  <td>
+                    <button class="btn btn-danger btn-sm" (click)="eliminarProducto(p.id)">Eliminar</button>
+                  </td>
+                </tr>
+              } @empty {
+                <tr><td colspan="6" class="text-center py-3">No hay productos registrados.</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
